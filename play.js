@@ -11,6 +11,7 @@ function getchar() {
 }
 
 function putchar(charCode) {
+    console.log(charCode)
     const stdout = document.getElementById("stdout");
     stdout.textContent = stdout.textContent + String.fromCharCode(charCode);
 }

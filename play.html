@@ -3,10 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <title></title>
+
+    <style>
+    html {
+      font-family: sans-serif;
+    }
+    table {
+      border-collapse: collapse;
+      border: 2px solid rgb(200,200,200);
+      letter-spacing: 1px;
+      font-size: 0.8rem;
+    }
+    td, th {
+      border: 1px solid rgb(190,190,190);
+      padding: 10px 20px;
+    }
+    td {
+      text-align: center;
+    }
+    </style>
 </head>
 <body>
     <script src="play.js"></script>
-    <div id="stdin"></div>
-    <div id="stdout"></div>
+    <table>
+        <tr>
+            <td>STDIN</td>
+            <td id="stdin"></td>
+        </tr>
+        <tr>
+            <td>STDOUT</td>
+            <td id="stdout"></td>
+        </tr>
+    </table>
 </body>
 </html>
