@@ -1,4 +1,5 @@
 main.wasm
+main.wat
 compile
 *.hi
 *.o

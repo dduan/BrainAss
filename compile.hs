@@ -112,16 +112,18 @@ usage :: IO ()
 usage = hPutStrLn stderr $ unlines
       [ "Usage: compile IMPORTED_INPUT IMPORTED_OUTPUT EXPORT                  "
       , "where                                                                 "
-      , "  IMPORTED_INPUT  is imported Javascript function for Brainfuck's .   "
-      , "  IMPORTED_OUTPUT is imported Javascript function for Brainfuck's ,   "
-      , "  EXPORT is the exported Javascript name for the WASM module          "
+      , "  IMPORTED_INPUT  is imported Javascript function for Brainfuck's ,   "
+      , "  IMPORTED_OUTPUT is imported Javascript function for Brainfuck's .   "
+      , "  EXPORT is the exported Javascript function from the WASM module     "
       , "                                                                      "
       , "Brainfuck source is read fro STDIN and text wasm is written to STDOUT "
       , "(similar to `cat`)                                                    "
       , "                                                                      "
       , "Example:                                                              "
-      , "  cat source.bf > compile bf.getchar bf.putchar > main.wat            "
-      , "  makes wasm module import bf.getchar as \".\" and bf.putchar as \",\""]
+      , "  cat source.bf | compile bf.getchar bf.putchar bf > main.wat          "
+      , "  makes wasm module import bf.getchar as \",\" and bf.putchar as \".\""
+      , "  and the wasm module exports a function named bf."
+      ]
 
 main :: IO ()
 main = getArgs >>= validateArgs >>= \x -> interact $ compile x
