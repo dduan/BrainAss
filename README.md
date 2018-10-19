@@ -21,7 +21,7 @@ Brainfuck source is read fro STDIN and text wasm is written to STDOUT
 (similar to `cat`)
 
 Example:
-  cat source.bf > compile bf.getchar bf.putchar bf> main.wat
+  cat source.bf > compile bf.getchar bf.putchar bf > main.wat
   makes wasm module import bf.getchar as "," and bf.putchar as "."
   and the wasm module exports a function named bf.
 ```
