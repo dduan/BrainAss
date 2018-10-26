@@ -4,6 +4,33 @@ import System.IO (hPutStrLn, stderr)
 import System.Environment
 import System.Exit
 
+data BFInstr
+    = Back    Int
+    | Forward Int
+    | Inc     Int
+    | Dec     Int
+    | Loop
+    | LoopEnd
+    | Get
+    | Put
+
+parseBFInstr :: Char -> [BFInstr]
+parseBFInstr '<' = [Back 1]
+parseBFInstr '>' = [Forward 1]
+parseBFInstr '+' = [Inc 1]
+parseBFInstr '-' = [Dec 1]
+parseBFInstr '[' = [Loop]
+parseBFInstr ']' = [LoopEnd]
+parseBFInstr '.' = [Put]
+parseBFInstr ',' = [Get]
+parseBFInstr _ = []
+
+parseBF :: String -> [BFInstr]
+parseBF = concatMap parseBFInstr
+
+optimize :: [BFInstr] -> [BFInstr]
+optimize = id
+
 compileHeader :: [[String]] -> [String]
 compileHeader [[getP, get], [putP, put]] =
     ["(module"
@@ -22,36 +49,36 @@ compileFooter name =
     , ")"
     ]
 
-genInstr :: Char -> [String]
-genInstr '<' =
+genInstr :: BFInstr -> [String]
+genInstr (Back n) =
     [ "get_global $p"
-    , "i32.const -1"
+    , "i32.const -" ++ show n
     , "i32.add"
     , "set_global $p"
     ]
-genInstr '>' =
+genInstr (Forward n) =
     [ "get_global $p"
-    , "i32.const 1"
+    , "i32.const " ++ show n
     , "i32.add"
     , "set_global $p"
     ]
-genInstr '+' =
+genInstr (Inc n) =
     [ "get_global $p"
     , "get_global $p"
     , "i32.load8_u"
-    , "i32.const 1"
+    , "i32.const " ++ show n
     , "i32.add"
     , "i32.store8"
     ]
-genInstr '-' =
+genInstr (Dec n) =
     [ "get_global $p"
     , "get_global $p"
     , "i32.load8_u"
-    , "i32.const -1"
+    , "i32.const -" ++ show n
     , "i32.add"
     , "i32.store8"
     ]
-genInstr '[' =
+genInstr Loop =
     [ "(block"
     , "(loop"
     , "get_global $p"
@@ -60,25 +87,24 @@ genInstr '[' =
     , "i32.eq"
     , "br_if 1"
     ]
-genInstr ']' =
+genInstr LoopEnd =
     [ "br 0"
     , ")"
     , ")"
     ]
-genInstr '.' =
+genInstr Put =
     [ "get_global $p"
     , "i32.load8_u"
     , "call $putc"
     ]
-genInstr ',' =
+genInstr Get =
     [ "get_global $p"
     , "call $getc"
     , "i32.store8"
     ]
-genInstr _ = []
 
 compileBody :: String -> [String]
-compileBody = concatMap genInstr
+compileBody instrs = concatMap genInstr (parseBF instrs)
 
 compile :: [[String]] -> String -> String
 compile imports source = unlines $ concat
