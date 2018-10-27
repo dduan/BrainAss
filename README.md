@@ -5,9 +5,9 @@ This is a Brainfuck to WebAssembly compiler.
 To use it, you'll need a recent [GHC][0] and [wat2wasm][1] installed in your
 environment.
 
-Run `make compile-compiler` (or `ghc compile.hs`) to compile the compiler.
+Run `make compile-compiler` (or `ghc brainass.hs`) to compile the compiler.
 
-Run `./compile` (or whatever you compiled `compile.hs` to) to read how to use
+Run `./brainass` (or whatever you compiled `brainass.hs` to) to read how to use
 the compiler. It should print the following.
 
 ```
