@@ -104,7 +104,7 @@ genInstr Get =
     ]
 
 compileBody :: String -> [String]
-compileBody instrs = concatMap genInstr (parseBF instrs)
+compileBody instrs = concatMap genInstr $ optimize $ parseBF instrs
 
 compile :: [[String]] -> String -> String
 compile imports source = unlines $ concat
