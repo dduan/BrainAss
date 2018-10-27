@@ -3,3 +3,7 @@ main.wat
 compile
 *.hi
 *.o
+dist
+.cabal-sandbox
+cabal.sandbox.config
+.DS_Store

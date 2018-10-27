@@ -6,10 +6,13 @@ build-and-run-helloworld: compile-compiler
 	$(MAKE) serve
 
 compile-compiler:
-	ghc compile.hs
+	@cabal sandbox init
+	@cabal build
+	cp dist/build/brainass/brainass compile
 
 serve:
 	python -m SimpleHTTPServer
 
 clean:
-	rm -f compile.hs main.wasm
+	rm -f compile main.wasm
+	cabal clean
